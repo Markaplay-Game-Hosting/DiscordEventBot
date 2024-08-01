@@ -28,7 +28,7 @@ the GCP Serivce Account token file must be store in the same directory as the ap
 services:
   DiscordEventBot:
 	container_name: EventBot
-	image: TBD
+	image: vincdelta/map-discordeventbot:latest
 	restart: unless-stopped
 	env:
 		- "DiscordUrlToken=https://discord/bla/bla/token"

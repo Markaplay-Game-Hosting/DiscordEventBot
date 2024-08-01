@@ -27,6 +27,7 @@ class Program
             Console.WriteLine("Waiting 5 seconds");
             Thread.Sleep(TimeSpan.FromSeconds(5));
             await Polling.Start();
+            Console.WriteLine("Task just ended");
         }
     }
 }

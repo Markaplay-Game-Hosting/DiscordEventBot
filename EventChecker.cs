@@ -53,8 +53,6 @@ public class EventChecker
 
         Events events = request.Execute();
 
-        Console.WriteLine(events.Description);
-
         IList<Event> eventsItems = events.Items;
 
         return events;

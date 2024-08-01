@@ -16,11 +16,13 @@ namespace DiscordEventBot
             HttpClientHandler handler = new HttpClientHandler();
             return Task.Factory.StartNew(() =>
                 {
+                    Console.WriteLine("Checking if an event is starting...");
                     Events events;
                     do
                     {
                         events = EventChecker.GetEvents();
                     } while (events == null || events.Items.Count == 0);
+                    Console.WriteLine("An Event is starting soon!");
                     return events;
                 }).
                 ContinueWith((events) =>
@@ -30,12 +32,16 @@ namespace DiscordEventBot
                     {
                         if(eventInfo.Start.DateTimeDateTimeOffset < DateTimeOffset.Now)
                         {
-                            Console.WriteLine($"Event {eventInfo.Summary} is on going");
+                            Console.WriteLine($"Event {eventInfo.Summary} is on going, skipping...");
                             return;
+                        } else
+                        {
+                            Console.WriteLine("Event will start soon, gotta tell everyone!");
                         }
                         Discord.EmbedBuilder builder = DiscordService.Build(eventInfo);
                         var discordService = new DiscordService();
                         discordService.SendMessage(builder);
+                        Console.WriteLine("Message Send!");
                     }
                 });
         }

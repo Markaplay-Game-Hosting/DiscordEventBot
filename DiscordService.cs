@@ -20,7 +20,7 @@ namespace DiscordEventBot
             {
                 throw new Exception("Client is not initiated!");
             }
-            await client.SendMessageAsync(text: "", embeds: new[] { message.Build() });
+            await client.SendMessageAsync(text: "@everyone", embeds: new[] { message.Build() });
                
         }
         public static DiscordWebhookClient LoginWebhook()
@@ -53,7 +53,6 @@ namespace DiscordEventBot
                 Title = $"{eventInfo.Summary} is starting!",
                 Timestamp = startTime,
                 Color = Color.Orange,
-                Description = "@everyone"
             };
             embed.AddField("Event Info", eventInfo.Description, inline: true);
 
