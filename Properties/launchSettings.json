@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DiscordEventBot": {
+      "commandName": "Project"
+    },
+    "Container (.NET SDK)": {
+      "commandName": "SdkContainer"
+    }
+  }
+}
