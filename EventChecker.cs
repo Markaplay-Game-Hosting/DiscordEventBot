@@ -62,8 +62,16 @@ public class EventChecker
     }
     private static CalendarService SetupService()
     {
-        var jsonData = System.IO.File.ReadAllText(@"/config/serviceaccount.json");
-        ServiceAccount sa;
+        string jsonData;
+        try
+        {
+            jsonData = System.IO.File.ReadAllText(@"/config/serviceaccount.json");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Unable to find the service account file in /config/serviceaccount.json with error: {ex.Message}");
+        }
+        ServiceAccount? sa;
         try
         {
             sa = JsonConvert.DeserializeObject<ServiceAccount>(jsonData);
