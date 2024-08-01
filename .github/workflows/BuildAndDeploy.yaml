@@ -30,4 +30,4 @@ jobs:
         uses: docker/build-push-action@v6.5.0
         with:
           push: true
-          tags: markaplay-game-hosting/discordeventnot:latest
+          tags: vincdelta/map-discordeventbot:latest
