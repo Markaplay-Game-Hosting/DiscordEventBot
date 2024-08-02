@@ -36,46 +36,52 @@ public class EventChecker
 
         if (service == null)
         {
-            throw new Exception("service not set properly");
+            Console.WriteLine("service not set properly");
         }
 
         if (CalendarId == null)
         {
-            throw new Exception("CalendarId is not set in the environnement variable");
+            Console.WriteLine("CalendarId is not set in the environnement variable");
         }
 
         var request = service.Events.List(CalendarId);
 
-        //request = (EventsResource.ListRequest)SampleHelpers.ApplyOptionalParms(request, optional);
-        request.TimeMin = DateTime.Now;
-        request.TimeMax = (DateTime.Now).AddSeconds(5);
-        //request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+        DateTimeOffset startTime = DateTime.Now;
+        DateTimeOffset endTime = DateTime.Now.AddSeconds(5);
+        
+        request.TimeMinDateTimeOffset = startTime;
+        request.TimeMaxDateTimeOffset = endTime;
 
-        Events events = request.Execute();
-
-        IList<Event> eventsItems = events.Items;
-
+        Events events = new Events();
+        try
+        {
+            events = request.Execute();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Cannot get events list from calendar: {ex.Message}");
+        }
         return events;
         
     }
     private static CalendarService SetupService()
     {
-        string jsonData;
+        string jsonData = null;
         try
         {
             jsonData = System.IO.File.ReadAllText(@"/config/serviceaccount.json");
         }
         catch (Exception ex)
         {
-            throw new Exception($"Unable to find the service account file in /config/serviceaccount.json with error: {ex.Message}");
+            Console.WriteLine($"Unable to find the service account file in /config/serviceaccount.json with error: {ex.Message}");
         }
-        ServiceAccount? sa;
+        ServiceAccount? sa = new ServiceAccount();
         try
         {
             sa = JsonConvert.DeserializeObject<ServiceAccount>(jsonData);
         } catch
         {
-            throw new Exception($"Unable to read account key form json file");
+            Console.WriteLine($"Unable to read account key form json file");
         }
 
         var credential = new ServiceAccountCredential(
@@ -92,7 +98,6 @@ public class EventChecker
         });
         return service;
     }
-
 }
 
 

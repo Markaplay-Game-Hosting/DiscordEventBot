@@ -17,9 +17,6 @@ class Program
 {
     public static async Task Main()
     {
-        // The webhook url follows the format https://discord.com/api/webhooks/{id}/{token}
-        // Because anyone with the webhook URL can use your webhook
-        // you should NOT hard code the URL or ID + token into your application.
         Console.WriteLine("starting Tasks");
 
         while (true)
