@@ -20,7 +20,12 @@ namespace DiscordEventBot
             {
                 throw new Exception("Client is not initiated!");
             }
-            await client.SendMessageAsync(text: "@everyone", embeds: new[] { message.Build() });
+            string? role = Environment.GetEnvironmentVariable("SendTo");
+            if (role == null) 
+            {
+                role = "@everyone";
+            }
+            await client.SendMessageAsync(text: role, embeds: new[] { message.Build() });
                
         }
         public static DiscordWebhookClient LoginWebhook()
