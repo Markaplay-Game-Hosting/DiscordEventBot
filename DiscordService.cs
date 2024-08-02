@@ -50,7 +50,7 @@ namespace DiscordEventBot
 
             var embed = new EmbedBuilder
             {
-                Title = $"{eventInfo.Summary} is starting!",
+                Title = $"{eventInfo.Summary}",
                 Timestamp = startTime,
                 Color = Color.Orange,
             };
