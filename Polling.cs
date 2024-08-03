@@ -1,5 +1,4 @@
 ﻿using Google.Apis.Calendar.v3.Data;
-using System.Collections.Generic;
 
 namespace DiscordEventBot
 {
@@ -35,11 +34,12 @@ namespace DiscordEventBot
                         }
                         Discord.EmbedBuilder builder = DiscordService.Build(eventInfo);
                         
-                        bool IsSent;
+                        bool IsSent = false;
                         int Counter = 0;
                         do {
-                            IsSent = DiscordService.SendMessage(builder);
                             Counter++;
+                            IsSent = DiscordService.SendMessage(builder);
+                            Console.WriteLine($"Message sending status: {IsSent}");
                         } while (IsSent == false || Counter <= 3);
                         
                         if (IsSent == true)

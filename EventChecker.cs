@@ -1,15 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
-using System.Globalization;
+using Google.Apis.Services;
+using Newtonsoft.Json;
 namespace DiscordEventBot;
 
 public class ServiceAccount
@@ -48,7 +41,7 @@ public class EventChecker
 
         DateTimeOffset startTime = DateTime.Now;
         DateTimeOffset endTime = DateTime.Now.AddSeconds(5);
-        
+
         request.TimeMinDateTimeOffset = startTime;
         request.TimeMaxDateTimeOffset = endTime;
 
@@ -62,7 +55,7 @@ public class EventChecker
             Console.WriteLine($"Cannot get events list from calendar: {ex.Message}");
         }
         return events;
-        
+
     }
     private static CalendarService SetupService()
     {
@@ -79,7 +72,8 @@ public class EventChecker
         try
         {
             sa = JsonConvert.DeserializeObject<ServiceAccount>(jsonData);
-        } catch
+        }
+        catch
         {
             Console.WriteLine($"Unable to read account key form json file");
         }

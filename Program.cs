@@ -4,7 +4,7 @@ namespace DiscordEventBot;
 
 class Program
 {
-    public static async Task Main()
+    public static Task Main()
     {
         Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - starting Tasks");
 
@@ -12,7 +12,7 @@ class Program
         {
             Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Waiting 5 seconds");
             Thread.Sleep(TimeSpan.FromSeconds(5));
-            await Polling.Start();
+            Polling.Start();
             Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Task just ended");
         }
     }
