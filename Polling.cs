@@ -21,6 +21,7 @@ namespace DiscordEventBot
                 ContinueWith((events) =>
                 {
                     var x = events.Result;
+                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Found {x.Items.Count} events");
                     foreach (Event eventInfo in x.Items)
                     {
                         if (eventInfo.Start.DateTimeDateTimeOffset < DateTimeOffset.Now)
@@ -35,19 +36,30 @@ namespace DiscordEventBot
                         Discord.EmbedBuilder builder = DiscordService.Build(eventInfo);
                         
                         bool IsSent = false;
-                        int Counter = 0;
-                        do {
-                            Counter++;
-                            IsSent = DiscordService.SendMessage(builder);
-                            Console.WriteLine($"Message sending status: {IsSent}");
-                        } while (IsSent == false || Counter <= 3);
-                        
-                        if (IsSent == true)
+
+                        IsSent = DiscordService.SendMessage(builder);
+                        if (IsSent != true)
                         {
-                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send Successfully!");
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy / MM / dd HH: mm:ss")} - Unable to send the message, retrying 1 time");
+                            IsSent = DiscordService.SendMessage(builder);
+                            if (IsSent != true) {
+                                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Unable to send the message, retrying 2 times");
+                                IsSent = DiscordService.SendMessage(builder);
+                                if (IsSent != true)
+                                {
+                                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Unable to send the message for the 3rd time, skipping...");
+                                } else
+                                {
+                                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully after 3 tries");
+                                }
+                            } else
+                            {
+                                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully after 2 tries");
+                            }
+                            
                         } else
                         {
-                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send Failed!");
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully after 1 try");
                         }
                     }
                 });
