@@ -8,7 +8,7 @@ namespace DiscordEventBot
     {
         static DiscordWebhookClient client = LoginWebhook();
 
-        public async Task<bool> SendMessage(EmbedBuilder message)
+        public static bool SendMessage(EmbedBuilder message)
         {
             if (client == null)
             {
@@ -21,7 +21,7 @@ namespace DiscordEventBot
                 role = "@everyone";
             }
             try{
-                await client.SendMessageAsync(text: role, embeds: new[] { message.Build() });
+                client.SendMessageAsync(text: role, embeds: new[] { message.Build() });
             }
             catch (Exception ex)
             {

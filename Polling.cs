@@ -35,15 +35,14 @@ namespace DiscordEventBot
                         }
                         Discord.EmbedBuilder builder = DiscordService.Build(eventInfo);
                         
-                        var discordService = new DiscordService();
-                        Task<bool> IsSent;
+                        bool IsSent;
                         int Counter = 0;
                         do {
-                            IsSent = discordService.SendMessage(builder);
+                            IsSent = DiscordService.SendMessage(builder);
                             Counter++;
-                        } while (IsSent.IsCompleted == false && IsSent.Result == false || Counter <= 3);
+                        } while (IsSent == false || Counter <= 3);
                         
-                        if (IsSent.Result == true)
+                        if (IsSent == true)
                         {
                             Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send Successfully!");
                         } else
