@@ -8,18 +8,28 @@ namespace DiscordEventBot
     {
         static DiscordWebhookClient client = LoginWebhook();
 
-        public async void SendMessage(EmbedBuilder message)
+        public async Task<bool> SendMessage(EmbedBuilder message)
         {
             if (client == null)
             {
                 Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Client is not initiated!");
+                return false;
             }
             string? role = Environment.GetEnvironmentVariable("SendTo");
             if (role == null)
             {
                 role = "@everyone";
             }
-            await client.SendMessageAsync(text: role, embeds: new[] { message.Build() });
+            try{
+                await client.SendMessageAsync(text: role, embeds: new[] { message.Build() });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Unable to send the message to discord: {ex.Message}");
+                return false;
+            }
+
+            return true;
 
         }
         public static DiscordWebhookClient LoginWebhook()

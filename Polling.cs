@@ -1,11 +1,5 @@
 ﻿using Google.Apis.Calendar.v3.Data;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
-using Discord.Webhook;
 
 namespace DiscordEventBot
 {
@@ -30,18 +24,32 @@ namespace DiscordEventBot
                     var x = events.Result;
                     foreach (Event eventInfo in x.Items)
                     {
-                        if(eventInfo.Start.DateTimeDateTimeOffset < DateTimeOffset.Now)
+                        if (eventInfo.Start.DateTimeDateTimeOffset < DateTimeOffset.Now)
                         {
-                            Console.WriteLine($"Event {eventInfo.Summary} is on going, skipping...");
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Event {eventInfo.Summary} is on going, skipping...");
                             return;
-                        } else
+                        }
+                        else
                         {
                             Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Event will start soon, gotta tell everyone!");
                         }
                         Discord.EmbedBuilder builder = DiscordService.Build(eventInfo);
+                        
                         var discordService = new DiscordService();
-                        discordService.SendMessage(builder);
-                        Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send!");
+                        Task<bool> IsSent;
+                        int Counter = 0;
+                        do {
+                            IsSent = discordService.SendMessage(builder);
+                            Counter++;
+                        } while (IsSent.Result == false || Counter <= 3);
+                        
+                        if (IsSent.Result == true)
+                        {
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send Successfully!");
+                        } else
+                        {
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send Failed!");
+                        }
                     }
                 });
         }

@@ -30,4 +30,4 @@ jobs:
         uses: docker/build-push-action@v6.5.0
         with:
           push: true
-          tags: vincdelta/map-discordeventbot:v1.0.5
+          tags: vincdelta/map-discordeventbot:v1.0.6
