@@ -45,26 +45,11 @@ namespace DiscordEventBot
                         IsSent = DiscordService.SendMessage(builder);
                         if (IsSent != true)
                         {
-                            Console.WriteLine($"{DateTime.Now.ToString("yyyy / MM / dd HH: mm:ss")} - Unable to send the message, retrying 1 time");
-                            IsSent = DiscordService.SendMessage(builder);
-                            if (IsSent != true) {
-                                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Unable to send the message, retrying 2 times");
-                                IsSent = DiscordService.SendMessage(builder);
-                                if (IsSent != true)
-                                {
-                                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Unable to send the message for the 3rd time, skipping...");
-                                } else
-                                {
-                                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully after 3 tries");
-                                }
-                            } else
-                            {
-                                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully after 2 tries");
-                            }
-                            
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message failed to be sent");
+
                         } else
                         {
-                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully after 1 try");
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message was sent successfully");
                         }
                     }
                 });
