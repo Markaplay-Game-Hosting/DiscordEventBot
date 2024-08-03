@@ -4,12 +4,12 @@ using Google.Apis.Calendar.v3.Data;
 
 namespace DiscordEventBot
 {
-    public class DiscordService
+    public class DiscordService(DiscordWebhookClient client)
     {
-        static DiscordWebhookClient client = LoginWebhook();
-
+        private DiscordWebhookClient _client = client;
         public static bool SendMessage(EmbedBuilder message)
         {
+            DiscordWebhookClient client = Singleton.Instance.Client;
             if (client == null)
             {
                 Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Client is not initiated!");
@@ -31,25 +31,6 @@ namespace DiscordEventBot
 
             return true;
 
-        }
-        public static DiscordWebhookClient LoginWebhook()
-        {
-            try
-            {
-                string? token = Environment.GetEnvironmentVariable("DiscordUrlToken");
-                if (token == null)
-                {
-                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Webhook url was not found in the environnement variable");
-                }
-                var client = new DiscordWebhookClient(token);
-                return client;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Error initializing DiscordWebhookClient: {ex.Message}");
-                //throw new Exception($"Error initializing the Webhook bot from url: {ex.Message}");
-            }
-            return null;
         }
         public static EmbedBuilder Build(Event eventInfo)
         {

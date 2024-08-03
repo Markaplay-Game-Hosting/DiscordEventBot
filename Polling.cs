@@ -1,9 +1,13 @@
-﻿using Google.Apis.Calendar.v3.Data;
+﻿using Discord.Webhook;
+using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
 
 namespace DiscordEventBot
 {
     public class Polling
     {
+        private DiscordWebhookClient _webhookClient = AuthService.LoginWebhook();
+        private CalendarService _calendarService = AuthService.SetupService();
         public static Task Start()
         {
             HttpClientHandler handler = new HttpClientHandler();

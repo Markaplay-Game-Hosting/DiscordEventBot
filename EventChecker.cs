@@ -25,8 +25,7 @@ public class EventChecker
     static string? CalendarId = Environment.GetEnvironmentVariable("GoogleCalendarId");
     public static Events GetEvents()
     {
-        CalendarService service = SetupService();
-
+        CalendarService service = Singleton.Instance.Service;
         if (service == null)
         {
             Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - service not set properly");
@@ -54,44 +53,8 @@ public class EventChecker
         {
             Console.WriteLine($"Cannot get events list from calendar: {ex.Message}");
         }
-        service.Dispose();
         return events;
 
-    }
-    private static CalendarService SetupService()
-    {
-        string jsonData = null;
-        try
-        {
-            jsonData = System.IO.File.ReadAllText(@"/config/serviceaccount.json");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Unable to find the service account file in /config/serviceaccount.json with error: {ex.Message}");
-        }
-        ServiceAccount? sa = new ServiceAccount();
-        try
-        {
-            sa = JsonConvert.DeserializeObject<ServiceAccount>(jsonData);
-        }
-        catch
-        {
-            Console.WriteLine($"Unable to read account key form json file");
-        }
-
-        var credential = new ServiceAccountCredential(
-                new ServiceAccountCredential.Initializer(sa.client_email)
-                {
-                    Scopes = new[] { CalendarService.Scope.Calendar, CalendarService.Scope.CalendarEvents },
-                    User = "map-eventcalendar-bot@markaplay.iam.gserviceaccount.com"
-                }.FromPrivateKey(sa.private_key)
-                );
-        var service = new CalendarService(new BaseClientService.Initializer()
-        {
-            HttpClientInitializer = credential,
-            ApplicationName = "MAP Event Checker Discord Bot"
-        });
-        return service;
     }
 }
 
