@@ -41,7 +41,7 @@ namespace DiscordEventBot
                         do {
                             IsSent = discordService.SendMessage(builder);
                             Counter++;
-                        } while (IsSent.Result == false || Counter <= 3);
+                        } while (IsSent.IsCompleted == false && IsSent.Result == false || Counter <= 3);
                         
                         if (IsSent.Result == true)
                         {
