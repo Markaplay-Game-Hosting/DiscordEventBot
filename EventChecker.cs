@@ -54,6 +54,7 @@ public class EventChecker
         {
             Console.WriteLine($"Cannot get events list from calendar: {ex.Message}");
         }
+        service.Dispose();
         return events;
 
     }
