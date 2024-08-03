@@ -6,10 +6,11 @@ namespace DiscordEventBot
 {
     public class Polling
     {
-        private DiscordWebhookClient _webhookClient = AuthService.LoginWebhook();
-        private CalendarService _calendarService = AuthService.SetupService();
+        
         public static Task Start()
         {
+            Singleton.Instance.Service = AuthService.SetupService();
+            Singleton.Instance.Client = AuthService.LoginWebhook();
             HttpClientHandler handler = new HttpClientHandler();
             return Task.Factory.StartNew(() =>
                 {
