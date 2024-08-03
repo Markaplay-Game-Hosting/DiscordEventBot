@@ -16,13 +16,13 @@ namespace DiscordEventBot
             HttpClientHandler handler = new HttpClientHandler();
             return Task.Factory.StartNew(() =>
                 {
-                    Console.WriteLine("Checking if an event is starting...");
+                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Checking if an event is starting...");
                     Events events;
                     do
                     {
                         events = EventChecker.GetEvents();
                     } while (events == null || events.Items.Count == 0);
-                    Console.WriteLine("An Event is starting soon!");
+                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - An Event is starting soon!");
                     return events;
                 }).
                 ContinueWith((events) =>
@@ -36,12 +36,12 @@ namespace DiscordEventBot
                             return;
                         } else
                         {
-                            Console.WriteLine("Event will start soon, gotta tell everyone!");
+                            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Event will start soon, gotta tell everyone!");
                         }
                         Discord.EmbedBuilder builder = DiscordService.Build(eventInfo);
                         var discordService = new DiscordService();
                         discordService.SendMessage(builder);
-                        Console.WriteLine("Message Send!");
+                        Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Message Send!");
                     }
                 });
         }

@@ -1,12 +1,6 @@
 ﻿using Discord;
 using Discord.Webhook;
-using System;
-using System.Collections.Generic;
 using Google.Apis.Calendar.v3.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DiscordEventBot
 {
@@ -18,15 +12,15 @@ namespace DiscordEventBot
         {
             if (client == null)
             {
-                throw new Exception("Client is not initiated!");
+                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Client is not initiated!");
             }
             string? role = Environment.GetEnvironmentVariable("SendTo");
-            if (role == null) 
+            if (role == null)
             {
                 role = "@everyone";
             }
             await client.SendMessageAsync(text: role, embeds: new[] { message.Build() });
-               
+
         }
         public static DiscordWebhookClient LoginWebhook()
         {
@@ -35,23 +29,24 @@ namespace DiscordEventBot
                 string? token = Environment.GetEnvironmentVariable("DiscordUrlToken");
                 if (token == null)
                 {
-                    throw new Exception("Webhook url was not found in the environnement variable");
+                    Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Webhook url was not found in the environnement variable");
                 }
                 var client = new DiscordWebhookClient(token);
                 return client;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error initializing DiscordWebhookClient: {ex.Message}");
-                throw new Exception($"Error initializing the Webhook bot from url: {ex.Message}");
+                Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Error initializing DiscordWebhookClient: {ex.Message}");
+                //throw new Exception($"Error initializing the Webhook bot from url: {ex.Message}");
             }
+            return null;
         }
         public static EmbedBuilder Build(Event eventInfo)
         {
             DateTimeOffset? startTime = eventInfo.Start.DateTimeDateTimeOffset;
-            Console.WriteLine($"Event Name: {eventInfo.Summary}");
-            Console.WriteLine($"Event Description: {eventInfo.Description}");
-            Console.WriteLine($"Event Starts at: {startTime}");
+            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Event Name: {eventInfo.Summary}");
+            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Event Description: {eventInfo.Description}");
+            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - Event Starts at: {startTime}");
 
             var embed = new EmbedBuilder
             {

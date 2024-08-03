@@ -36,12 +36,12 @@ public class EventChecker
 
         if (service == null)
         {
-            Console.WriteLine("service not set properly");
+            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - service not set properly");
         }
 
         if (CalendarId == null)
         {
-            Console.WriteLine("CalendarId is not set in the environnement variable");
+            Console.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} - CalendarId is not set in the environnement variable");
         }
 
         var request = service.Events.List(CalendarId);
